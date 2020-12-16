@@ -24,23 +24,25 @@ public class HTMLExporter implements Table.Exporter {
 		out.write("</title>");
 		out.write("</head>");
 		
-		out.write("<table>");
+		
 		storeRow(columnNames);
-		out.write("</table>");
+		
 	}
 	
 	public void storeRow(Iterator data) throws IOException {
 		int i = width;
 		
+		out.write("<table border=\"1\" width=\"500\" align=\"center\">");
 		out.write("<tr>");
 		while (data.hasNext()) {
 			Object datum = data.next();
-			
-			out.write("<td>");
+			System.out.println(">>> table: " + datum.toString());
+			out.write("<td width=\"250\" align=\"center\">");
 			out.write(datum.toString());
 			out.write("</td>");
 		}
 		out.write("</tr>");
+		out.write("</table>");
 	}
 	
 	public void startTable() throws IOException {
