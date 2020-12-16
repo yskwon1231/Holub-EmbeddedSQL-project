@@ -19,21 +19,24 @@ public class XMLExporter implements Table.Exporter {
 		else
 			this.tableName = tableName;
 		
-		System.out.println(">>> table name : " + this.tableName);
+		out.write("<" + this.tableName + ">");
+		out.write("\n");
 		
 		// Store column names.
-		System.out.println(">>> XMLExporter - 1");
+		out.write("<column>");
 		while (columnNames.hasNext()) {
-			System.out.println(">>> XMLExporter - while loop");
 			Object col = columnNames.next();
 			System.out.println(col.toString());
 			this.columnNames.add(col.toString());
+			out.write(col.toString());
+			out.write(",");
 		}
-		System.out.println(">>> XMLExporter : " + this.columnNames.toString());
+		out.write("</column>");
+		out.write("\n");
 	}
 	
 	public void storeRow (Iterator data) throws IOException {
-		out.write("<" + this.tableName + ">");
+		out.write("<row>");
 		out.write("\n");
 		
 		Iterator colData = this.columnNames.iterator();
@@ -47,7 +50,7 @@ public class XMLExporter implements Table.Exporter {
 			out.write("</" + column.toString() + ">");
 			out.write("\n");
 		}
-		out.write("</" + this.tableName + ">");
+		out.write("</row>");
 		out.write("\n");
 	}
 	
@@ -57,6 +60,7 @@ public class XMLExporter implements Table.Exporter {
 		out.write("\n");
 	}
 	public void endTable() throws IOException {
-		// nothing to do.
+		// End of XML.
+		out.write("</" + this.tableName + ">");
 	}
 }
