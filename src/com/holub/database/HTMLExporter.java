@@ -5,16 +5,12 @@ import java.util.*;
 
 public class HTMLExporter implements Table.Exporter {
 	private final Writer out;
-	private int width;
-	private int height;
 	
 	public HTMLExporter(Writer out) {
 		this.out = out;
 	}
 	
 	public void storeMetadata(String tableName, int width, int height, Iterator columnNames) throws IOException {
-		this.width = width;
-		this.height = height;
 		
 		out.write("<head>");
 		out.write("<title>");
@@ -30,13 +26,11 @@ public class HTMLExporter implements Table.Exporter {
 	}
 	
 	public void storeRow(Iterator data) throws IOException {
-		int i = width;
-		
+
 		out.write("<table border=\"1\" width=\"500\" align=\"center\">");
 		out.write("<tr>");
 		while (data.hasNext()) {
 			Object datum = data.next();
-			System.out.println(">>> table: " + datum.toString());
 			out.write("<td width=\"250\" align=\"center\">");
 			out.write(datum.toString());
 			out.write("</td>");
