@@ -33,18 +33,22 @@ public class XMLImporter implements Table.Importer {
 		factory = DocumentBuilderFactory.newInstance();
 		documentBuilder = factory.newDocumentBuilder();
 		document = documentBuilder.parse(filePath);
+		System.out.println(">>> file path : " + filePath);
 	}
 	
 	public void startTable() throws IOException {
 		// Get table name.
 		Element root = document.getDocumentElement();
 		this.tableName = root.getNodeName();
+		System.out.println(">>> table name : " + tableName);
 		
 		// Get column name.
 		NodeList columnNodeList = document.getElementsByTagName("column");
 		Node columnNode = columnNodeList.item(0);
-		String tmp = columnNode.getTextContent().trim();
+		String tmp = columnNode.getTextContent();
 		this.columnNames = tmp.split(",");
+		System.out.println(">>> column : " + columnNode.getNodeName());
+		System.out.println(">>> column : " + columnNames.length);
 		
 		// Get rows.
 		this.rowNodeList = document.getElementsByTagName("row");
@@ -65,17 +69,20 @@ public class XMLImporter implements Table.Importer {
 	
 	public Iterator loadRow() throws IOException {
 		Iterator row = null;
-		ArrayList<String> rowValues = new ArrayList<String>();
+		String [] values = null;
 		
 		// Get Rows
 		if (rowCount < rowNodeList.getLength()) {
 			Node node = rowNodeList.item(rowCount);
 			for (node.getFirstChild(); node != null; node = node.getNextSibling()) {
-				String tmp = node.getTextContent();
-				rowValues.add(tmp);
+				System.out.println(">>> row : ");
+				String tmp = node.getTextContent().trim();
+				System.out.println(tmp);
+				if(tmp != null)
+					values = tmp.split("\\s");
 			}
 		}
-		row = rowValues.listIterator();
+		row = new ArrayIterator(values);
 		return row;
 	}
 	
